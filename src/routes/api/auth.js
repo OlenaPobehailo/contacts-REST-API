@@ -1,6 +1,6 @@
+import { authController } from "../../controllers/auth";
 const express = require("express");
 
-const authController = require("../../controllers/auth");
 const { validateBody } = require("../../decorators");
 const { authSchemas } = require("../../validators");
 const { authenticate, upload } = require("../../middlewares");
@@ -38,4 +38,4 @@ router.patch(
   authController.updateAvatar
 );
 
-module.exports = router;
+export default router;

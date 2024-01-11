@@ -1,19 +1,48 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const gravatar = require("gravatar");
-const path = require("path");
-const fs = require("fs/promises");
-const { nanoid } = require("nanoid");
+import bcrypt from "bcrypt";
+import jwt, { Secret } from "jsonwebtoken";
+import gravatar from "gravatar";
+import path from "path";
+import fs from "fs/promises";
+import { nanoid } from "nanoid";
+import { Request, Response } from "express";
+// import { File } from "multer"; // Import the Multer type
 
-const { User } = require("../models/user");
-const { HttpError, sendEmail } = require("../helpers");
-const { ctrlWrapper } = require("../decorators");
+import { User } from "../models/user";
+import { HttpError, sendEmail } from "../helpers";
+import { ctrlWrapper } from "../decorators";
 
-const { SECRET_KEY, BASE_URL } = process.env;
+const SECRET_KEY: string = process.env.SECRET_KEY || "";
+const BASE_URL: string = process.env.BASE_URL || "http://localhost:3000";
+
+if (!SECRET_KEY) {
+  console.error("SECRET_KEY is not defined.");
+  process.exit(1);
+}
 
 const avatarsDir = path.join(__dirname, "../", "public", "avatars");
 
-const register = async (req, res) => {
+interface CustomRequest extends Request {
+  user?: {
+    _id: string;
+    email: string;
+    subscription: string;
+    file?: CustomFile;
+  };
+}
+
+interface CustomFile {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  size: number;
+  destination: string;
+  filename: string;
+  path: string;
+  buffer: Buffer;
+}
+
+const register = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
@@ -24,8 +53,6 @@ const register = async (req, res) => {
   const hashPassword = await bcrypt.hash(password, 10);
   const avatarURL = gravatar.url(email);
   const verificationToken = nanoid();
-
-  console.log("verificationToken", verificationToken);
 
   const newUser = await User.create({
     ...req.body,
@@ -40,8 +67,6 @@ const register = async (req, res) => {
     html: `<a href="${BASE_URL}/api/users/verify/${verificationToken}" target="_blank">Click to verify email</a>`,
   };
 
-  console.log(verifyEmail);
-
   await sendEmail(verifyEmail);
 
   res.status(201).json({
@@ -52,13 +77,10 @@ const register = async (req, res) => {
   });
 };
 
-const verifyEmail = async (req, res) => {
+const verifyEmail = async (req: Request, res: Response) => {
   const { verificationToken } = req.params;
 
   const user = await User.findOne({ verificationToken });
-
-  console.log(verificationToken);
-  console.log(user);
 
   if (!user) {
     throw HttpError(404, "User not found");
@@ -74,7 +96,7 @@ const verifyEmail = async (req, res) => {
   });
 };
 
-const resendVerifyEmail = async (req, res) => {
+const resendVerifyEmail = async (req: Request, res: Response) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
 
@@ -99,7 +121,7 @@ const resendVerifyEmail = async (req, res) => {
   });
 };
 
-const login = async (req, res) => {
+const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
@@ -135,8 +157,8 @@ const login = async (req, res) => {
   });
 };
 
-const getCurrent = async (req, res) => {
-  const { email, subscription } = req.user;
+const getCurrent = async (req: CustomRequest, res: Response) => {
+  const { email, subscription } = req.user || {};
 
   res.json({
     email,
@@ -144,8 +166,8 @@ const getCurrent = async (req, res) => {
   });
 };
 
-const logout = async (req, res) => {
-  const { _id } = req.user;
+const logout = async (req: CustomRequest, res: Response) => {
+  const { _id } = req.user || {};
   await User.findByIdAndUpdate(_id, { token: "" });
 
   res.status(204).json({
@@ -153,25 +175,37 @@ const logout = async (req, res) => {
   });
 };
 
-const updateAvatar = async (req, res) => {
-  const { _id } = req.user;
-  const { path: tempUpload, originalname } = req.file;
+const updateAvatar = async (req: CustomRequest, res: Response) => {
+  const { _id } = req.user || {};
+
+  const { path: tempUpload, originalname } = req.file || {};
+  console.log("tempUpload", tempUpload);
+
+  if (!tempUpload) {
+    return res.status(400).json({ message: "Invalid file upload" });
+  }
 
   const filename = `${_id}_${originalname}`;
   const resultUpload = path.join(avatarsDir, filename);
+  console.log("resultUpload", resultUpload);
 
-  await fs.rename(tempUpload, resultUpload);
+  try {
+    await fs.rename(tempUpload, resultUpload);
 
-  const avatarURL = path.join("avatars", filename);
+    const avatarURL = path.join("avatars", filename);
 
-  await User.findByIdAndUpdate(_id, { avatarURL });
+    await User.findByIdAndUpdate(_id, { avatarURL });
 
-  res.json({
-    avatarURL,
-  });
+    res.json({
+      avatarURL,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Error updating avatar" });
+  }
 };
 
-module.exports = {
+export const authController = {
   register: ctrlWrapper(register),
   verifyEmail: ctrlWrapper(verifyEmail),
   resendVerifyEmail: ctrlWrapper(resendVerifyEmail),
