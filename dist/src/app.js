@@ -1,18 +1,24 @@
 "use strict";
-const express = require("express");
-const logger = require("morgan");
-const cors = require("cors");
-require("dotenv").config();
-const contactsRouter = require("./routes/api/contacts");
-const authRouter = require("./routes/api/auth");
-const app = express();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const morgan_1 = __importDefault(require("morgan"));
+const cors_1 = __importDefault(require("cors"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const contacts_1 = __importDefault(require("./routes/api/contacts"));
+const auth_1 = __importDefault(require("./routes/api/auth"));
+const app = (0, express_1.default)();
+const PORT = process.env.PORT || 3000;
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
-app.use(logger(formatsLogger));
-app.use(cors());
-app.use(express.json());
-app.use(express.static("public"));
-app.use("/api/contacts", contactsRouter);
-app.use("/api/users", authRouter);
+app.use((0, morgan_1.default)(formatsLogger));
+app.use((0, cors_1.default)());
+app.use(express_1.default.json());
+app.use(express_1.default.static("public"));
+app.use("/api/contacts", contacts_1.default);
+app.use("/api/users", auth_1.default);
 app.use((req, res) => {
     res.status(404).json({ message: "Not found" });
 });
@@ -20,4 +26,4 @@ app.use((err, req, res, next) => {
     const { status = 500, message = "Server error" } = err;
     res.status(status).json({ message });
 });
-module.exports = app;
+exports.default = app;

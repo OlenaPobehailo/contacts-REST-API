@@ -6,10 +6,11 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const contactsRouter = require("./routes/api/contacts");
-const authRouter = require("./routes/api/auth");
+import contactsRouter from "./routes/api/contacts";
+import authRouter from "./routes/api/auth";
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 

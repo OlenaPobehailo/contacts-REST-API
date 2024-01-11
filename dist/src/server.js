@@ -1,12 +1,16 @@
 "use strict";
-const mongoose = require("mongoose");
-const app = require("./app");
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = __importDefault(require("mongoose"));
+const app_1 = __importDefault(require("./app"));
 const { DB_HOST } = process.env;
-mongoose.set("strictQuery", true);
-mongoose
-    .connect(DB_HOST)
+mongoose_1.default.set("strictQuery", true);
+mongoose_1.default
+    .connect(DB_HOST || "")
     .then(() => {
-    app.listen(3000, () => {
+    app_1.default.listen(3000, () => {
         console.log("Database connection successful.");
     });
 })
