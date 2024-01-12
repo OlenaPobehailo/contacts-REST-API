@@ -1,21 +1,16 @@
-const {
-  describe,
-  beforeAll,
-  afterAll,
-  afterEach,
-  test,
-  expect,
-} = require("@jest/globals");
+import bcrypt from "bcrypt";
+import mongoose from "mongoose";
+import request from "supertest";
 
-const bcrypt = require("bcrypt");
-const mongoose = require("mongoose");
-const request = require("supertest");
-
-const app = require("../app");
-const { User } = require("../models/user");
-const { login } = require("./auth");
+import app from "../app";
+import { User } from "../models/user";
+import { loginController } from "./auth";
 
 const { DB_HOST } = process.env;
+
+if (!DB_HOST) {
+  throw new Error("DB_HOST environment variable is not set.");
+}
 
 interface TestLoginData {
   email: string;
@@ -63,13 +58,13 @@ describe("Test Login Controller", () => {
     const req = { body: testLoginData };
     const res = { json: jest.fn() };
 
-    await login(req, res);
+    await loginController(req, res);
 
     expect(res.json).toHaveBeenCalledWith({
       token: expect.any(String),
       user: expect.objectContaining({
         email: testLoginData.email,
-        subscription: expect.stringContaining("starter", "pro", "business"),
+        subscription: expect.stringContaining("starter" || "pro" || "business"),
       }),
     });
   });

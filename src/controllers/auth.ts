@@ -184,6 +184,8 @@ const updateAvatar = async (req: CustomRequest, res: Response) => {
   }
 };
 
+export const loginController = ctrlWrapper(login);
+
 export const authController = {
   register: ctrlWrapper(register),
   verifyEmail: ctrlWrapper(verifyEmail),
@@ -193,3 +195,5 @@ export const authController = {
   logout: ctrlWrapper(logout),
   updateAvatar: ctrlWrapper(updateAvatar),
 };
+
+

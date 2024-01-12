@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authController = void 0;
+exports.authController = exports.loginController = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const gravatar_1 = __importDefault(require("gravatar"));
@@ -149,6 +149,7 @@ const updateAvatar = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         return res.status(500).json({ message: "Error updating avatar" });
     }
 });
+exports.loginController = (0, decorators_1.ctrlWrapper)(login);
 exports.authController = {
     register: (0, decorators_1.ctrlWrapper)(register),
     verifyEmail: (0, decorators_1.ctrlWrapper)(verifyEmail),
