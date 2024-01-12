@@ -1,7 +1,15 @@
-const { Schema, model } = require("mongoose");
+import { Schema, model, Types } from "mongoose";
 const { handleMongooseError } = require("../helpers");
 
-const contactSchema = new Schema(
+interface IContact {
+  name: string;
+  email?: string;
+  phone?: string;
+  favorite: boolean;
+  owner: Types.ObjectId;
+}
+
+const contactSchema = new Schema<IContact>(
   {
     name: {
       type: String,
@@ -35,6 +43,6 @@ const contactSchema = new Schema(
 
 contactSchema.post("save", handleMongooseError);
 
-const Contact = model("contact", contactSchema);
+const Contact = model<IContact>("contact", contactSchema);
 
-module.exports = { Contact };
+export { Contact };

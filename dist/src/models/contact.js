@@ -1,7 +1,9 @@
 "use strict";
-const { Schema, model } = require("mongoose");
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Contact = void 0;
+const mongoose_1 = require("mongoose");
 const { handleMongooseError } = require("../helpers");
-const contactSchema = new Schema({
+const contactSchema = new mongoose_1.Schema({
     name: {
         type: String,
         required: [true, "Set name for contact"],
@@ -17,7 +19,7 @@ const contactSchema = new Schema({
         default: false,
     },
     owner: {
-        type: Schema.Types.ObjectId,
+        type: mongoose_1.Schema.Types.ObjectId,
         ref: "user",
     },
 }, {
@@ -25,5 +27,5 @@ const contactSchema = new Schema({
     timestamps: true,
 });
 contactSchema.post("save", handleMongooseError);
-const Contact = model("contact", contactSchema);
-module.exports = { Contact };
+const Contact = (0, mongoose_1.model)("contact", contactSchema);
+exports.Contact = Contact;
