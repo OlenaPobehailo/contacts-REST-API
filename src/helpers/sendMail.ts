@@ -1,6 +1,13 @@
-const nodemailer = require("nodemailer");
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
 
-require("dotenv").config();
+dotenv.config();
+
+interface EmailData {
+  to: string;
+  subject: string;
+  html: string;
+}
 
 const config = {
   host: "smtp.gmail.com",
@@ -12,7 +19,7 @@ const config = {
 
 const transporter = nodemailer.createTransport(config);
 
-const sendEmail = async (data) => {
+export const sendEmail = async (data: EmailData) => {
   try {
     const emailOptions = {
       ...data,
@@ -36,4 +43,4 @@ const sendEmail = async (data) => {
 //   text: "Привіт. Ми тестуємо надсилання листів!",
 // });
 
-module.exports = sendEmail;
+// module.exports = sendEmail;

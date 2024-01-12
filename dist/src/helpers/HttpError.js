@@ -1,4 +1,6 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.HttpError = void 0;
 const errorMessageList = {
     400: "Bad Request",
     401: "Not authorized",
@@ -11,4 +13,4 @@ const HttpError = (status, message = errorMessageList[status]) => {
     error.status = status;
     return error;
 };
-module.exports = HttpError;
+exports.HttpError = HttpError;
