@@ -52,7 +52,8 @@ describe("Test Login Controller", () => {
         yield createUser(testLoginData);
         const req = { body: testLoginData };
         const res = { json: jest.fn() };
-        yield (0, auth_1.loginController)(req, res);
+        const next = jest.fn();
+        yield (0, auth_1.loginController)(req, res, next);
         expect(res.json).toHaveBeenCalledWith({
             token: expect.any(String),
             user: expect.objectContaining({

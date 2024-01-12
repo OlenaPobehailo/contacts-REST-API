@@ -154,14 +154,18 @@ const logout = async (req: CustomRequest, res: Response) => {
   });
 };
 
-const updateAvatar = async (req: CustomRequest, res: Response) => {
+const updateAvatar = async (
+  req: CustomRequest,
+  res: Response
+): Promise<void> => {
   const { _id } = req.user || {};
 
   const { path: tempUpload, originalname } = req.file || {};
   console.log("tempUpload", tempUpload);
 
   if (!tempUpload) {
-    return res.status(400).json({ message: "Invalid file upload" });
+    res.status(400).json({ message: "Invalid file upload" });
+    return;
   }
 
   const filename = `${_id}_${originalname}`;
@@ -180,7 +184,7 @@ const updateAvatar = async (req: CustomRequest, res: Response) => {
     });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Error updating avatar" });
+    res.status(500).json({ message: "Error updating avatar" });
   }
 };
 
@@ -195,5 +199,3 @@ export const authController = {
   logout: ctrlWrapper(logout),
   updateAvatar: ctrlWrapper(updateAvatar),
 };
-
-

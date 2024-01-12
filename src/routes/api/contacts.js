@@ -1,5 +1,5 @@
+import  express from "express";
 import { contactsController } from "../../controllers/contacts";
-const express = require("express");
 
 const { validateBody } = require("../../decorators");
 const { contactSchemas } = require("../../validators");

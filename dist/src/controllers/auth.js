@@ -131,7 +131,8 @@ const updateAvatar = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     const { path: tempUpload, originalname } = req.file || {};
     console.log("tempUpload", tempUpload);
     if (!tempUpload) {
-        return res.status(400).json({ message: "Invalid file upload" });
+        res.status(400).json({ message: "Invalid file upload" });
+        return;
     }
     const filename = `${_id}_${originalname}`;
     const resultUpload = path_1.default.join(avatarsDir, filename);
@@ -146,7 +147,7 @@ const updateAvatar = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
     catch (error) {
         console.error(error);
-        return res.status(500).json({ message: "Error updating avatar" });
+        res.status(500).json({ message: "Error updating avatar" });
     }
 });
 exports.loginController = (0, decorators_1.ctrlWrapper)(login);

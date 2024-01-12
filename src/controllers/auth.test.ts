@@ -55,10 +55,11 @@ describe("Test Login Controller", () => {
   test("The response should return a token and a user object with 2 fields email and subscription, having the data type String", async () => {
     await createUser(testLoginData);
 
-    const req = { body: testLoginData };
-    const res = { json: jest.fn() };
+    const req: any = { body: testLoginData };
+    const res: any = { json: jest.fn() };
+    const next = jest.fn();
 
-    await loginController(req, res);
+    await loginController(req, res, next);
 
     expect(res.json).toHaveBeenCalledWith({
       token: expect.any(String),
