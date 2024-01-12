@@ -1,11 +1,13 @@
 "use strict";
-const { isValidObjectId } = require('mongoose');
-const { HttpError } = require('../helpers');
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.isValidId = void 0;
+const mongoose_1 = require("mongoose");
+const helpers_1 = require("../helpers");
 const isValidId = (req, res, next) => {
     const { contactId } = req.params;
-    if (!isValidObjectId(contactId)) {
-        return next(HttpError(400, `${contactId} is not a valid id`));
+    if (!(0, mongoose_1.isValidObjectId)(contactId)) {
+        return next((0, helpers_1.HttpError)(400, `${contactId} is not a valid id`));
     }
     next();
 };
-module.exports = isValidId;
+exports.isValidId = isValidId;

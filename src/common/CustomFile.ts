@@ -1,6 +1,5 @@
 export interface CustomFile {
   originalname: string;
-  encoding: string;
   mimetype: string;
   size: number;
   destination: string;
