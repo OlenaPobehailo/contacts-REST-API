@@ -1,9 +1,9 @@
-import  express from "express";
+import express from "express";
 import { contactsController } from "../../controllers/contacts";
 
-const { validateBody } = require("../../decorators");
-const { contactSchemas } = require("../../validators");
-const { isValidId, authenticate } = require("../../middlewares");
+import { validateBody } from "../../decorators";
+import { contactSchemas } from "../../validators";
+import { isValidId, authenticate } from "../../middlewares";
 
 const router = express.Router();
 

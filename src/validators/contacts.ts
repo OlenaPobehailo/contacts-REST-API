@@ -1,4 +1,4 @@
-const Joi = require("joi");
+import Joi from "joi";
 
 const createContactSchema = Joi.object({
   name: Joi.string().required().messages({
@@ -28,11 +28,11 @@ const createContactSchema = Joi.object({
 
 const updateFavoriteSchema = Joi.object({
   favorite: Joi.boolean().required().messages({
-    'any.required': 'Missing field favorite',
+    "any.required": "Missing field favorite",
   }),
 });
 
-module.exports = {
+export const contactSchemas = {
   createContactSchema,
   updateFavoriteSchema,
 };

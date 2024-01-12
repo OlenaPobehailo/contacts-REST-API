@@ -1,4 +1,4 @@
-const Joi = require("joi");
+import Joi from "joi";
 
 const registerSchema = Joi.object({
   email: Joi.string().required(),
@@ -13,12 +13,11 @@ const loginSchema = Joi.object({
 
 const verifySchema = Joi.object({
   email: Joi.string().required().messages({
-    'any.required': 'missing required field email',
+    "any.required": "missing required field email",
   }),
 });
 
-
-module.exports = {
+export const authSchemas = {
   registerSchema,
   loginSchema,
   verifySchema,

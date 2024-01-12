@@ -1,9 +1,9 @@
 import { authController } from "../../controllers/auth";
-const express = require("express");
+import express from "express";
 
-const { validateBody } = require("../../decorators");
-const { authSchemas } = require("../../validators");
-const { authenticate, upload } = require("../../middlewares");
+import { validateBody } from "../../decorators";
+import { authSchemas } from "../../validators";
+import { authenticate, upload } from "../../middlewares";
 
 const router = express.Router();
 
