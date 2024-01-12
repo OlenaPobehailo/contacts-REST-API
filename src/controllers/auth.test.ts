@@ -17,18 +17,23 @@ const { login } = require("./auth");
 
 const { DB_HOST } = process.env;
 
-const testLoginData = {
+interface TestLoginData {
+  email: string;
+  password: string;
+}
+
+const testLoginData: TestLoginData = {
   email: "test1@gmail.com",
   password: "test1",
 };
 
-const createUser = async (userData) => {
+const createUser = async (userData: TestLoginData) => {
   const hashPassword = await bcrypt.hash(userData.password, 10);
   await User.create({ ...userData, password: hashPassword });
 };
 
 describe("Test Login Controller", () => {
-  let server = null;
+  let server: any = null;
 
   beforeAll(async () => {
     server = app.listen(3001);
