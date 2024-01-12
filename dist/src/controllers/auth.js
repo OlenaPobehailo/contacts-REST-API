@@ -19,7 +19,6 @@ const gravatar_1 = __importDefault(require("gravatar"));
 const path_1 = __importDefault(require("path"));
 const promises_1 = __importDefault(require("fs/promises"));
 const nanoid_1 = require("nanoid");
-// import { File } from "multer"; // Import the Multer type
 const user_1 = require("../models/user");
 const helpers_1 = require("../helpers");
 const decorators_1 = require("../decorators");

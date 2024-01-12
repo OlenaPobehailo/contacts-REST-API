@@ -1,23 +1,40 @@
-const { Contact } = require("../models/contact");
-const { HttpError } = require("../helpers");
-const { ctrlWrapper } = require("../decorators");
+import { Response, NextFunction } from "express";
 
-const getAll = async (req, res, next) => {
-  const { _id: owner } = req.user;
+import { Contact } from "../models/contact";
+import { HttpError } from "../helpers";
+import { ctrlWrapper } from "../decorators";
+
+import { CustomRequest } from "../common/CustomRequest";
+
+interface Filter {
+  owner?: string;
+  favorite: boolean;
+}
+
+const getAll = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const { _id: owner } = req.user || {};
   const { page = 1, limit = 20, favorite } = req.query;
-  const skip = (page - 1) * limit;
+  const skip = (Number(page) - 1) * Number(limit);
 
-  const filter = { owner, favorite: favorite === "true" };
+  const filter: Filter = { owner, favorite: favorite === "true" };
 
   const result = await Contact.find(filter, "-createdAt -updatedAt", {
     skip,
-    limit,
+    limit: Number(limit),
   }).populate("owner", "email subscription");
 
   res.json(result);
 };
 
-const getById = async (req, res, next) => {
+const getById = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   const { contactId } = req.params;
   const result = await Contact.findById(contactId);
 
@@ -28,13 +45,21 @@ const getById = async (req, res, next) => {
   res.json(result);
 };
 
-const createContact = async (req, res, next) => {
-  const { _id: owner } = req.user;
+const createContact = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const { _id: owner } = req.user || {};
   const result = await Contact.create({ ...req.body, owner });
   res.status(201).json(result);
 };
 
-const deleteById = async (req, res, next) => {
+const deleteById = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   const { contactId } = req.params;
   const result = await Contact.findByIdAndDelete(contactId);
 
@@ -47,7 +72,11 @@ const deleteById = async (req, res, next) => {
   });
 };
 
-const updateById = async (req, res, next) => {
+const updateById = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   const { contactId } = req.params;
 
   const result = await Contact.findByIdAndUpdate(contactId, req.body, {
@@ -60,8 +89,12 @@ const updateById = async (req, res, next) => {
   res.json(result);
 };
 
-const updateFavorite = async (req, res, next) => {
-  const updateStatusContact = async (contactId, favorite) => {
+const updateFavorite = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const updateStatusContact = async (contactId: string, favorite: boolean) => {
     return await Contact.findByIdAndUpdate(
       contactId,
       { favorite },
@@ -82,7 +115,7 @@ const updateFavorite = async (req, res, next) => {
   res.json(result);
 };
 
-module.exports = {
+export const contactsController = {
   getAll: ctrlWrapper(getAll),
   getById: ctrlWrapper(getById),
   createContact: ctrlWrapper(createContact),

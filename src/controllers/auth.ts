@@ -1,15 +1,15 @@
 import bcrypt from "bcrypt";
-import jwt, { Secret } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import gravatar from "gravatar";
 import path from "path";
 import fs from "fs/promises";
 import { nanoid } from "nanoid";
 import { Request, Response } from "express";
-// import { File } from "multer"; // Import the Multer type
 
 import { User } from "../models/user";
 import { HttpError, sendEmail } from "../helpers";
 import { ctrlWrapper } from "../decorators";
+import { CustomRequest } from "../common/CustomRequest";
 
 const SECRET_KEY: string = process.env.SECRET_KEY || "";
 const BASE_URL: string = process.env.BASE_URL || "http://localhost:3000";
@@ -20,27 +20,6 @@ if (!SECRET_KEY) {
 }
 
 const avatarsDir = path.join(__dirname, "../", "public", "avatars");
-
-interface CustomRequest extends Request {
-  user?: {
-    _id: string;
-    email: string;
-    subscription: string;
-    file?: CustomFile;
-  };
-}
-
-interface CustomFile {
-  fieldname: string;
-  originalname: string;
-  encoding: string;
-  mimetype: string;
-  size: number;
-  destination: string;
-  filename: string;
-  path: string;
-  buffer: Buffer;
-}
 
 const register = async (req: Request, res: Response) => {
   const { email, password } = req.body;

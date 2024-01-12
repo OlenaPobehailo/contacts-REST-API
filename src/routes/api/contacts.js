@@ -1,6 +1,6 @@
+import { contactsController } from "../../controllers/contacts";
 const express = require("express");
 
-const contactsController = require("../../controllers/contacts");
 const { validateBody } = require("../../decorators");
 const { contactSchemas } = require("../../validators");
 const { isValidId, authenticate } = require("../../middlewares");
@@ -41,4 +41,4 @@ router.delete(
   contactsController.deleteById
 );
 
-module.exports = router;
+export default router;
