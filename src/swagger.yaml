@@ -243,6 +243,69 @@ paths:
                   
       security:
         - BearerAuth: []
+        
+  /api/contacts/{contactId}/favorite:
+    patch:
+      tags:
+        - api/contacts
+      summary: Update the favorite status of a contact by ID
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          description: ID of the contact to update
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: JWT token for authentication
+      requestBody:
+        description: Updated favorite status information
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                favorite:
+                  type: boolean
+              required:
+                - favorite
+      responses:
+        '200':
+          description: Contact favorite status updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Missing field favorite"
+        '404':
+          description: Contact not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Not found"
+                  
+      security:
+        - BearerAuth: []
 
 components:
   schemas:
