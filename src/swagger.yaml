@@ -16,6 +16,7 @@ tags:
 
 paths:
   /api/contacts:
+  
     get:
       tags:
         - api/contacts
@@ -39,6 +40,105 @@ paths:
       
       security:
         - BearerAuth: []
+        
+        
+  
+    post:
+      tags:
+        - api/contacts
+      summary: Create a new contact
+      requestBody:
+        description: Contact information
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                phone:
+                  type: string
+              required:
+                - name
+                - email
+                - phone
+      responses:
+        '201':
+          description: Contact created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  phone:
+                    type: string
+                required:
+                  - id
+                  - name
+                  - email
+                  - phone
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Missing required name field"    
+      security:
+        - BearerAuth: []      
+        
+        
+  /api/contacts/:id:
+    get:
+      tags:
+        - api/contacts
+      summary: Returns contact by id in json format
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: JWT token for authentication   
+        - name: id
+          in: path
+          required: true
+          description: ID of the contact to retrieve
+          schema:
+            type: string  # Assuming the ID is of string type
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '404':
+          description: Contact not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Not found
+  
+  
 
 components:
   schemas:
