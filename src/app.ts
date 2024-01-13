@@ -1,4 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./swagger.json";
 
 import logger from "morgan";
 import cors from "cors";
@@ -18,6 +20,8 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use("/api/contacts", contactsRouter);
 app.use("/api/users", authRouter);

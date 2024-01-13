@@ -1,0 +1,64 @@
+openapi: 3.0.3
+info:
+  title: Contacts API docs
+  description: |-
+    API documentation for Contacts backend
+    [GitHub repository](https://github.com/OlenaPobehailo/contacts-REST-API)
+  version: 1.0.0
+servers:
+  - url: https://contacts-rest-api-siob.onrender.com
+tags:
+  - name: api/contacts
+    description: Work with contacts collection
+
+  - name: user
+    description: Operations about user
+
+paths:
+  /api/contacts:
+    get:
+      tags:
+        - api/contacts
+      summary: Returns an array of all contacts in json format
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: JWT token for authentication          
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+      
+      security:
+        - BearerAuth: []
+
+components:
+  schemas:
+    Contact:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        favorite:
+          type: boolean
+        owner:
+          type: string
+          description: MongoDB ObjectId
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
