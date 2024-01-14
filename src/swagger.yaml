@@ -11,16 +11,17 @@ tags:
   - name: api/contacts
     description: Work with contacts collection
 
-  - name: user
+  - name: users
     description: Operations about user
 
 paths:
   /api/contacts:
-  
     get:
+      summary: Returns an array of all contacts in json format
       tags:
         - api/contacts
-      summary: Returns an array of all contacts in json format
+      security:
+        - BearerAuth: []
       parameters:
         - name: Authorization
           in: header
@@ -38,15 +39,12 @@ paths:
                 items:
                   $ref: '#/components/schemas/Contact'
       
-      security:
-        - BearerAuth: []
-        
-        
-  
     post:
+      summary: Create a new contact
       tags:
         - api/contacts
-      summary: Create a new contact
+      security:
+        - BearerAuth: []      
       requestBody:
         description: Contact information
         required: true
@@ -88,17 +86,15 @@ paths:
                   - phone
         '400':
           description: Missing required name field
-          
-             
-      security:
-        - BearerAuth: []      
-        
+
         
   /api/contacts/{id}:
     get:
+      summary: Returns contact by id in json format
       tags:
         - api/contacts
-      summary: Returns contact by id in json format
+      security:
+        - BearerAuth: []
       parameters:
         - name: Authorization
           in: header
@@ -123,13 +119,12 @@ paths:
           description: Contact not found
           
                   
-      security:
-        - BearerAuth: []
-                  
     delete:
+      summary: Delete a contact by ID
       tags:
         - api/contacts
-      summary: Delete a contact by ID
+      security:
+        - BearerAuth: []
       parameters:
         - name: id
           in: path
@@ -152,14 +147,12 @@ paths:
         '404':
           description: Contact not found
           
-      security:
-        - BearerAuth: []
-  
-  
     put:
+      summary: Update a contact by ID
       tags:
         - api/contacts
-      summary: Update a contact by ID
+      security:
+        - BearerAuth: []
       parameters:
         - name: id
           in: path
@@ -200,16 +193,15 @@ paths:
         
         '404':
           description: Contact not found
-          
                   
-      security:
-        - BearerAuth: []
         
   /api/contacts/{contactId}/favorite:
     patch:
+      summary: Update the favorite status of a contact by ID
       tags:
         - api/contacts
-      summary: Update the favorite status of a contact by ID
+      security:
+        - BearerAuth: []
       parameters:
         - name: contactId
           in: path
@@ -248,10 +240,7 @@ paths:
           
         '404':
           description: Contact not found
-          
-      security:
-        - BearerAuth: []
-        
+
         
   /users/signup:
     post:
@@ -298,6 +287,78 @@ paths:
         '409':
           description: Email in use
           
+  /users/login:
+    post:
+      summary: User login
+      tags:
+        - users
+      requestBody:
+        description: Login Request
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+                password:
+                  type: string
+                  example: "user_password"
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: "exampletoken"
+                  user:
+                    $ref: '#/components/schemas/User'
+        '400':
+          description: Error from Joi or another validation library
+          
+        '401':
+          description: Email or password is wrong
+  
+  /users/logout:
+    get:
+      summary: User logout
+      tags:
+        - users
+      security:
+        - BearerAuth: []
+      responses:
+        '204':
+          description: No content
+        '401':
+          description: Not authorized
+              
+  /users/current:
+    get:
+      summary: Get current user details
+      tags:
+        - users
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Not authorized
+               
 
 
 components:
@@ -324,11 +385,8 @@ components:
         email:
           type: string
           format: email
-        password:
-          type: string
-      required:
-        - email
-        - password      
+        subscription:
+          type: string 
 
   securitySchemes:
     BearerAuth:
