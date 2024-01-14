@@ -87,16 +87,9 @@ paths:
                   - email
                   - phone
         '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                example:
-                  message: "Missing required name field"    
+          description: Missing required name field
+          
+             
       security:
         - BearerAuth: []      
         
@@ -128,15 +121,7 @@ paths:
                 $ref: '#/components/schemas/Contact'
         '404':
           description: Contact not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                example:
-                  message: Not found
+          
                   
       security:
         - BearerAuth: []
@@ -166,15 +151,7 @@ paths:
                   message: "Contact deleted"
         '404':
           description: Contact not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                example:
-                  message: "Not found"
+          
       security:
         - BearerAuth: []
   
@@ -219,27 +196,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Contact'
         '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                example:
-                  message: "Missing fields"
+          description: Missing fields
+        
         '404':
           description: Contact not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                example:
-                  message: "Not found"
+          
                   
       security:
         - BearerAuth: []
@@ -281,33 +242,66 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Contact'
+                
         '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                example:
-                  message: "Missing field favorite"
+          description: Missing field favorite
+          
         '404':
           description: Contact not found
+          
+      security:
+        - BearerAuth: []
+        
+        
+  /users/signup:
+    post:
+      summary: User registration
+      tags:
+        - users
+      requestBody:
+        description: Registration Request
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+              required:
+                - email
+                - password
+      responses:
+        '201':
+          description: Successful registration
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  message:
-                    type: string
-                example:
-                  message: "Not found"
-                  
-      security:
-        - BearerAuth: []
+                  user:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                        format: email
+                      subscription:
+                        type: string
+                required:
+                  - user
+        '400':
+          description: 'Error details from Joi or another validation library'
+          
+        '409':
+          description: Email in use
+          
+
 
 components:
+
   schemas:
     Contact:
       type: object
@@ -323,6 +317,18 @@ components:
         owner:
           type: string
           description: MongoDB ObjectId
+          
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required:
+        - email
+        - password      
 
   securitySchemes:
     BearerAuth:

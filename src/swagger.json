@@ -123,22 +123,7 @@
             }
           },
           "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "message": "Missing required name field"
-                  }
-                }
-              }
-            }
+            "description": "Missing required name field"
           }
         },
         "security": [
@@ -186,22 +171,7 @@
             }
           },
           "404": {
-            "description": "Contact not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "message": "Not found"
-                  }
-                }
-              }
-            }
+            "description": "Contact not found"
           }
         },
         "security": [
@@ -246,22 +216,7 @@
             }
           },
           "404": {
-            "description": "Contact not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "message": "Not found"
-                  }
-                }
-              }
-            }
+            "description": "Contact not found"
           }
         },
         "security": [
@@ -329,40 +284,10 @@
             }
           },
           "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "message": "Missing fields"
-                  }
-                }
-              }
-            }
+            "description": "Missing fields"
           },
           "404": {
-            "description": "Contact not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "message": "Not found"
-                  }
-                }
-              }
-            }
+            "description": "Contact not found"
           }
         },
         "security": [
@@ -429,40 +354,10 @@
             }
           },
           "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "message": "Missing field favorite"
-                  }
-                }
-              }
-            }
+            "description": "Missing field favorite"
           },
           "404": {
-            "description": "Contact not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "message": "Not found"
-                  }
-                }
-              }
-            }
+            "description": "Contact not found"
           }
         },
         "security": [
@@ -470,6 +365,73 @@
             "BearerAuth": []
           }
         ]
+      }
+    },
+    "/users/signup": {
+      "post": {
+        "summary": "User registration",
+        "tags": [
+          "users"
+        ],
+        "requestBody": {
+          "description": "Registration Request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful registration",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "email": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "subscription": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "user"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error details from Joi or another validation library"
+          },
+          "409": {
+            "description": "Email in use"
+          }
+        }
       }
     }
   },
@@ -495,6 +457,22 @@
             "description": "MongoDB ObjectId"
           }
         }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
       }
     },
     "securitySchemes": {
