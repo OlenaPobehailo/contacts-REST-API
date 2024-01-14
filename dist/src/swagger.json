@@ -668,6 +668,98 @@
                     }
                 }
             }
+        },
+        "/users/verify/{verificationToken}": {
+            "get": {
+                "summary": "Verify user by verification token",
+                "tags": [
+                    "users"
+                ],
+                "parameters": [
+                    {
+                        "name": "verificationToken",
+                        "in": "path",
+                        "required": true,
+                        "description": "Token used for user verification",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Verification successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Verification successful"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/users/verify": {
+            "post": {
+                "summary": "Resend email verification",
+                "tags": [
+                    "users"
+                ],
+                "requestBody": {
+                    "description": "Resend Verification Email Request",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Verification email sent",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Verification email sent"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Verification has already been passed"
+                    },
+                    "401": {
+                        "description": "Email not found"
+                    }
+                }
+            }
         }
     },
     "components": {
