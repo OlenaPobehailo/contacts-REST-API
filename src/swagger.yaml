@@ -67,7 +67,14 @@ paths:
       tags:
         - api/contacts
       security:
-        - BearerAuth: []      
+        - BearerAuth: []
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: JWT token for authentication
       requestBody:
         description: Contact information
         required: true
@@ -149,6 +156,12 @@ paths:
       security:
         - BearerAuth: []
       parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: JWT token for authentication
         - name: id
           in: path
           required: true
@@ -177,18 +190,18 @@ paths:
       security:
         - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          description: ID of the contact to update
-          schema:
-            type: string
         - name: Authorization
           in: header
           required: true
           schema:
             type: string
           description: JWT token for authentication
+        - name: id
+          in: path
+          required: true
+          description: ID of the contact to update
+          schema:
+            type: string
       requestBody:
         description: Updated contact information
         required: true
@@ -226,18 +239,18 @@ paths:
       security:
         - BearerAuth: []
       parameters:
-        - name: contactId
-          in: path
-          required: true
-          description: ID of the contact to update
-          schema:
-            type: string
         - name: Authorization
           in: header
           required: true
           schema:
             type: string
           description: JWT token for authentication
+        - name: contactId
+          in: path
+          required: true
+          description: ID of the contact to update
+          schema:
+            type: string
       requestBody:
         description: Updated favorite status information
         required: true
@@ -359,6 +372,13 @@ paths:
         - users
       security:
         - BearerAuth: []
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: JWT token for authentication
       responses:
         '204':
           description: No content
@@ -372,6 +392,13 @@ paths:
         - users
       security:
         - BearerAuth: []
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: JWT token for authentication
       responses:
         '200':
           description: Successful response
@@ -381,7 +408,39 @@ paths:
                 $ref: '#/components/schemas/User'
         '401':
           description: Not authorized
-               
+          
+  /users/avatars:
+    patch:
+      summary: Update user avatar
+      tags:
+        - users
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                avatar:
+                  type: string
+                  format: binary
+                  description: User's avatar image
+                  
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  avatarURL:
+                    type: string
+                    example: image link goes here
+        '401':
+          description: Not authorized
 
 
 components:
