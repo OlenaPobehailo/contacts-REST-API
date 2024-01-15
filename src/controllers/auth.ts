@@ -21,7 +21,7 @@ if (!SECRET_KEY) {
 
 const avatarsDir = path.resolve(__dirname, "..", "public", "avatars");
 
-const register = async (req: ICustomRequest, res: Response) => {
+const register = async (req: ICustomRequest, res: Response): Promise<void> => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
@@ -56,7 +56,10 @@ const register = async (req: ICustomRequest, res: Response) => {
   });
 };
 
-const verifyEmail = async (req: ICustomRequest, res: Response) => {
+const verifyEmail = async (
+  req: ICustomRequest,
+  res: Response
+): Promise<void> => {
   const { verificationToken } = req.params;
 
   const user = await User.findOne({ verificationToken });
@@ -75,7 +78,10 @@ const verifyEmail = async (req: ICustomRequest, res: Response) => {
   });
 };
 
-const resendVerifyEmail = async (req: ICustomRequest, res: Response) => {
+const resendVerifyEmail = async (
+  req: ICustomRequest,
+  res: Response
+): Promise<void> => {
   const { email } = req.body;
   const user = await User.findOne({ email });
 
@@ -100,7 +106,7 @@ const resendVerifyEmail = async (req: ICustomRequest, res: Response) => {
   });
 };
 
-const login = async (req: ICustomRequest, res: Response) => {
+const login = async (req: ICustomRequest, res: Response): Promise<void> => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
@@ -136,7 +142,10 @@ const login = async (req: ICustomRequest, res: Response) => {
   });
 };
 
-const getCurrent = async (req: ICustomRequest, res: Response) => {
+const getCurrent = async (
+  req: ICustomRequest,
+  res: Response
+): Promise<void> => {
   const { email, subscription } = req.user || {};
 
   res.json({
@@ -145,7 +154,7 @@ const getCurrent = async (req: ICustomRequest, res: Response) => {
   });
 };
 
-const logout = async (req: ICustomRequest, res: Response) => {
+const logout = async (req: ICustomRequest, res: Response): Promise<void> => {
   const { _id } = req.user || {};
   await User.findByIdAndUpdate(_id, { token: "" });
 

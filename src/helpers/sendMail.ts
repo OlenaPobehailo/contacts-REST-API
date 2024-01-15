@@ -14,7 +14,7 @@ const config = {
 
 const transporter = nodemailer.createTransport(config);
 
-export const sendEmail = async (data: EmailData) => {
+export const sendEmail = async (data: EmailData): Promise<boolean> => {
   try {
     const emailOptions = {
       ...data,

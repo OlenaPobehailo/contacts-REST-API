@@ -1,3 +1,4 @@
+import ICustomMongoError from "../interfaces/ICustomMongoError";
 import ErrorMessageList from "../interfaces/IErrorMessageList";
 
 const errorMessageList: ErrorMessageList = {
@@ -11,8 +12,8 @@ const errorMessageList: ErrorMessageList = {
 export const HttpError = (
   status: number,
   message: string = errorMessageList[status]
-) => {
-  const error = new Error(message);
+): ICustomMongoError => {
+  const error = new Error(message) as ICustomMongoError;
   (error as any).status = status;
   return error;
 };

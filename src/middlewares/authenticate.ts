@@ -11,7 +11,7 @@ export const authenticate = async (
   req: ICustomRequest,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   const { authorization = "" } = req.headers;
 
   const [bearer, token] = authorization.split(" ");
