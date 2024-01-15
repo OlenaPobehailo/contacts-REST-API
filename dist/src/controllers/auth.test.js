@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -26,34 +17,34 @@ const testLoginData = {
     email: "test1@gmail.com",
     password: "test1",
 };
-const createUser = (userData) => __awaiter(void 0, void 0, void 0, function* () {
-    const hashPassword = yield bcrypt_1.default.hash(userData.password, 10);
-    yield user_1.User.create(Object.assign(Object.assign({}, userData), { password: hashPassword }));
-});
+const createUser = async (userData) => {
+    const hashPassword = await bcrypt_1.default.hash(userData.password, 10);
+    await user_1.User.create({ ...userData, password: hashPassword });
+};
 describe("Test Login Controller", () => {
     let server = null;
-    beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
+    beforeAll(async () => {
         server = app_1.default.listen(3001);
-        yield mongoose_1.default.connect(DB_HOST);
-    }));
-    afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
+        await mongoose_1.default.connect(DB_HOST);
+    });
+    afterAll(async () => {
         server.close();
-        yield mongoose_1.default.connection.close();
-    }));
-    afterEach(() => __awaiter(void 0, void 0, void 0, function* () {
-        yield user_1.User.deleteMany({});
-    }));
-    test("The response should have status code 200", () => __awaiter(void 0, void 0, void 0, function* () {
-        yield createUser(testLoginData);
-        const res = yield (0, supertest_1.default)(app_1.default).post("/api/users/login").send(testLoginData);
+        await mongoose_1.default.connection.close();
+    });
+    afterEach(async () => {
+        await user_1.User.deleteMany({});
+    });
+    test("The response should have status code 200", async () => {
+        await createUser(testLoginData);
+        const res = await (0, supertest_1.default)(app_1.default).post("/api/users/login").send(testLoginData);
         expect(res.statusCode).toBe(200);
-    }));
-    test("The response should return a token and a user object with 2 fields email and subscription, having the data type String", () => __awaiter(void 0, void 0, void 0, function* () {
-        yield createUser(testLoginData);
+    });
+    test("The response should return a token and a user object with 2 fields email and subscription, having the data type String", async () => {
+        await createUser(testLoginData);
         const req = { body: testLoginData };
         const res = { json: jest.fn() };
         const next = jest.fn();
-        yield (0, auth_1.loginController)(req, res, next);
+        await (0, auth_1.loginController)(req, res, next);
         expect(res.json).toHaveBeenCalledWith({
             token: expect.any(String),
             user: expect.objectContaining({
@@ -61,5 +52,5 @@ describe("Test Login Controller", () => {
                 subscription: expect.stringContaining("starter" || "pro" || "business"),
             }),
         });
-    }));
+    });
 });

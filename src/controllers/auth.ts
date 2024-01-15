@@ -19,7 +19,7 @@ if (!SECRET_KEY) {
   process.exit(1);
 }
 
-const avatarsDir = path.join(__dirname, "../", "public", "avatars");
+const avatarsDir = path.resolve(__dirname, "..", "public", "avatars");
 
 const register = async (req: ICustomRequest, res: Response) => {
   const { email, password } = req.body;
