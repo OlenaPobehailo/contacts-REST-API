@@ -4,7 +4,7 @@ import gravatar from "gravatar";
 import path from "path";
 import fs from "fs/promises";
 import { nanoid } from "nanoid";
-import { Request, Response } from "express";
+import { Response } from "express";
 
 import { User } from "../models/user";
 import { HttpError, sendEmail } from "../helpers";
@@ -21,7 +21,7 @@ if (!SECRET_KEY) {
 
 const avatarsDir = path.join(__dirname, "../", "public", "avatars");
 
-const register = async (req: Request, res: Response) => {
+const register = async (req: CustomRequest, res: Response) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
@@ -56,7 +56,7 @@ const register = async (req: Request, res: Response) => {
   });
 };
 
-const verifyEmail = async (req: Request, res: Response) => {
+const verifyEmail = async (req: CustomRequest, res: Response) => {
   const { verificationToken } = req.params;
 
   const user = await User.findOne({ verificationToken });
@@ -75,7 +75,7 @@ const verifyEmail = async (req: Request, res: Response) => {
   });
 };
 
-const resendVerifyEmail = async (req: Request, res: Response) => {
+const resendVerifyEmail = async (req: CustomRequest, res: Response) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
 
@@ -100,7 +100,7 @@ const resendVerifyEmail = async (req: Request, res: Response) => {
   });
 };
 
-const login = async (req: Request, res: Response) => {
+const login = async (req: CustomRequest, res: Response) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
