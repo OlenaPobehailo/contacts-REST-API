@@ -16,8 +16,8 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const supertest_1 = __importDefault(require("supertest"));
 const app_1 = __importDefault(require("../app"));
-const user_1 = require("../models/user");
 const auth_1 = require("./auth");
+const user_1 = require("../models/user");
 const { DB_HOST } = process.env;
 if (!DB_HOST) {
     throw new Error("DB_HOST environment variable is not set.");

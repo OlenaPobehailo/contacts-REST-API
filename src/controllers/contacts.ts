@@ -4,15 +4,11 @@ import { Contact } from "../models/contact";
 import { HttpError } from "../helpers";
 import { ctrlWrapper } from "../decorators";
 
-import { CustomRequest } from "../common/CustomRequest";
-
-interface Filter {
-  owner?: string;
-  favorite: boolean;
-}
+import { ICustomRequest } from "../interfaces/ICustomRequest";
+import Filter from "../interfaces/IFilter";
 
 const getAll = async (
-  req: CustomRequest,
+  req: ICustomRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -31,7 +27,7 @@ const getAll = async (
 };
 
 const getById = async (
-  req: CustomRequest,
+  req: ICustomRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -46,7 +42,7 @@ const getById = async (
 };
 
 const createContact = async (
-  req: CustomRequest,
+  req: ICustomRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -56,7 +52,7 @@ const createContact = async (
 };
 
 const deleteById = async (
-  req: CustomRequest,
+  req: ICustomRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -73,7 +69,7 @@ const deleteById = async (
 };
 
 const updateById = async (
-  req: CustomRequest,
+  req: ICustomRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -90,7 +86,7 @@ const updateById = async (
 };
 
 const updateFavorite = async (
-  req: CustomRequest,
+  req: ICustomRequest,
   res: Response,
   next: NextFunction
 ) => {

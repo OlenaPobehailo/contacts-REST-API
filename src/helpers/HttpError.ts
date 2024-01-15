@@ -1,6 +1,4 @@
-interface ErrorMessageList {
-  [key: number]: string;
-}
+import ErrorMessageList from "../interfaces/IErrorMessageList";
 
 const errorMessageList: ErrorMessageList = {
   400: "Bad Request",
@@ -18,4 +16,3 @@ export const HttpError = (
   (error as any).status = status;
   return error;
 };
-

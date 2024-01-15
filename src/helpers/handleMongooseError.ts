@@ -1,12 +1,8 @@
-import { MongoError } from 'mongodb';
 import { NextFunction } from "express";
-
-interface CustomMongoError extends MongoError {
-  status?: number;
-}
+import ICustomMongoError from "../interfaces/ICustomMongoError";
 
 export const handleMongooseError = (
-  error: CustomMongoError,
+  error: ICustomMongoError,
   data: any,
   next: NextFunction
 ) => {

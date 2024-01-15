@@ -1,13 +1,6 @@
-import { Schema, model, Types } from "mongoose";
+import { Schema, model } from "mongoose";
+import IContact from "../interfaces/IContact";
 const { handleMongooseError } = require("../helpers");
-
-interface IContact {
-  name: string;
-  email?: string;
-  phone?: string;
-  favorite: boolean;
-  owner: Types.ObjectId;
-}
 
 const contactSchema = new Schema<IContact>(
   {

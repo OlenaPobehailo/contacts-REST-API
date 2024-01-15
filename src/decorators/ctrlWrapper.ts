@@ -1,15 +1,15 @@
 import { Response, NextFunction } from "express";
-import { CustomRequest } from "../common/CustomRequest";
+import { ICustomRequest } from "../interfaces/ICustomRequest";
 
 export const ctrlWrapper = (
   controller: (
-    req: CustomRequest,
+    req: ICustomRequest,
     res: Response,
     next: NextFunction
   ) => Promise<void>
 ) => {
   const func = async (
-    req: CustomRequest,
+    req: ICustomRequest,
     res: Response,
     next: NextFunction
   ) => {

@@ -1,15 +1,6 @@
 import { Schema, model, Types } from "mongoose";
+import IUser from "../interfaces/IUser";
 const { handleMongooseError } = require("../helpers");
-
-interface IUser {
-  password: string;
-  email: string;
-  subscription: "starter" | "pro" | "business";
-  token: string | null;
-  avatarURL?: string;
-  verify: boolean;
-  verificationToken: string;
-}
 
 const userSchema = new Schema<IUser>(
   {

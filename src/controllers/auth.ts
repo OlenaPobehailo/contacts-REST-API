@@ -9,7 +9,7 @@ import { Response } from "express";
 import { User } from "../models/user";
 import { HttpError, sendEmail } from "../helpers";
 import { ctrlWrapper } from "../decorators";
-import { CustomRequest } from "../common/CustomRequest";
+import { ICustomRequest } from "../interfaces/ICustomRequest";
 
 const SECRET_KEY: string = process.env.SECRET_KEY || "";
 const BASE_URL: string = process.env.BASE_URL || "http://localhost:3000";
@@ -21,7 +21,7 @@ if (!SECRET_KEY) {
 
 const avatarsDir = path.join(__dirname, "../", "public", "avatars");
 
-const register = async (req: CustomRequest, res: Response) => {
+const register = async (req: ICustomRequest, res: Response) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
@@ -56,7 +56,7 @@ const register = async (req: CustomRequest, res: Response) => {
   });
 };
 
-const verifyEmail = async (req: CustomRequest, res: Response) => {
+const verifyEmail = async (req: ICustomRequest, res: Response) => {
   const { verificationToken } = req.params;
 
   const user = await User.findOne({ verificationToken });
@@ -75,7 +75,7 @@ const verifyEmail = async (req: CustomRequest, res: Response) => {
   });
 };
 
-const resendVerifyEmail = async (req: CustomRequest, res: Response) => {
+const resendVerifyEmail = async (req: ICustomRequest, res: Response) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
 
@@ -100,7 +100,7 @@ const resendVerifyEmail = async (req: CustomRequest, res: Response) => {
   });
 };
 
-const login = async (req: CustomRequest, res: Response) => {
+const login = async (req: ICustomRequest, res: Response) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
@@ -136,7 +136,7 @@ const login = async (req: CustomRequest, res: Response) => {
   });
 };
 
-const getCurrent = async (req: CustomRequest, res: Response) => {
+const getCurrent = async (req: ICustomRequest, res: Response) => {
   const { email, subscription } = req.user || {};
 
   res.json({
@@ -145,7 +145,7 @@ const getCurrent = async (req: CustomRequest, res: Response) => {
   });
 };
 
-const logout = async (req: CustomRequest, res: Response) => {
+const logout = async (req: ICustomRequest, res: Response) => {
   const { _id } = req.user || {};
   await User.findByIdAndUpdate(_id, { token: "" });
 
@@ -155,7 +155,7 @@ const logout = async (req: CustomRequest, res: Response) => {
 };
 
 const updateAvatar = async (
-  req: CustomRequest,
+  req: ICustomRequest,
   res: Response
 ): Promise<void> => {
   const { _id } = req.user || {};

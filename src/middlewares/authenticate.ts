@@ -3,12 +3,12 @@ import { NextFunction, Response } from "express";
 
 import { HttpError } from "../helpers";
 import { User } from "../models/user";
-import { CustomRequest } from "../common/CustomRequest";
+import { ICustomRequest } from "../interfaces/ICustomRequest";
 
 const { SECRET_KEY } = process.env;
 
 export const authenticate = async (
-  req: CustomRequest,
+  req: ICustomRequest,
   res: Response,
   next: NextFunction
 ) => {

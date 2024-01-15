@@ -1,13 +1,8 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import EmailData from "../interfaces/IEmailData";
 
 dotenv.config();
-
-interface EmailData {
-  to: string;
-  subject: string;
-  html: string;
-}
 
 const config = {
   host: "smtp.gmail.com",

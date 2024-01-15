@@ -1,12 +1,12 @@
 import { isValidObjectId } from "mongoose";
 import { Response, NextFunction } from "express";
 
-import { CustomRequest } from "../common/CustomRequest";
+import { ICustomRequest } from "../interfaces/ICustomRequest";
 
 import { HttpError } from "../helpers";
 
 export const isValidId = (
-  req: CustomRequest,
+  req: ICustomRequest,
   res: Response,
   next: NextFunction
 ) => {

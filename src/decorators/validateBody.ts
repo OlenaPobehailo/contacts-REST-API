@@ -1,10 +1,10 @@
 import { Response, NextFunction } from "express";
 import { Schema } from "joi";
-import { CustomRequest } from "../common/CustomRequest";
+import { ICustomRequest } from "../interfaces/ICustomRequest";
 import { HttpError } from "../helpers";
 
 export const validateBody = (schema: Schema) => {
-  const func = (req: CustomRequest, res: Response, next: NextFunction) => {
+  const func = (req: ICustomRequest, res: Response, next: NextFunction) => {
     try {
       const { error } = schema.validate(req.body);
       if (error) {

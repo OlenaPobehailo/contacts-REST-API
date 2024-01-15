@@ -3,18 +3,15 @@ import mongoose from "mongoose";
 import request from "supertest";
 
 import app from "../app";
-import { User } from "../models/user";
+
 import { loginController } from "./auth";
+import { User } from "../models/user";
+import TestLoginData from "../interfaces/ITestLoginData";
 
 const { DB_HOST } = process.env;
 
 if (!DB_HOST) {
   throw new Error("DB_HOST environment variable is not set.");
-}
-
-interface TestLoginData {
-  email: string;
-  password: string;
 }
 
 const testLoginData: TestLoginData = {

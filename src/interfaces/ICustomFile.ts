@@ -1,4 +1,4 @@
-export interface CustomFile {
+export interface ICustomFile {
   originalname: string;
   mimetype: string;
   size: number;

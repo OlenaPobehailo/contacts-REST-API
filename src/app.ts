@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
-import { CustomRequest } from "./common/CustomRequest";
+import { ICustomRequest } from "./interfaces/ICustomRequest";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./swagger.json";
 
@@ -27,12 +27,12 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api/contacts", contactsRouter);
 app.use("/api/users", authRouter);
 
-app.use((req: CustomRequest, res: Response) => {
+app.use((req: ICustomRequest, res: Response) => {
   res.status(404).json({ message: "Not found" });
 });
 
 app.use(
-  (err: any, req: CustomRequest, res: Response, next: NextFunction): void => {
+  (err: any, req: ICustomRequest, res: Response, next: NextFunction): void => {
     const { status = 500, message = "Server error" } = err;
     res.status(status).json({ message });
   }
