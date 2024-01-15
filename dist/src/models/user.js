@@ -1,7 +1,9 @@
 "use strict";
-const { Schema, model } = require("mongoose");
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.User = void 0;
+const mongoose_1 = require("mongoose");
 const { handleMongooseError } = require("../helpers");
-const userSchema = new Schema({
+const userSchema = new mongoose_1.Schema({
     password: {
         type: String,
         required: [true, "Password is required"],
@@ -37,5 +39,5 @@ const userSchema = new Schema({
     timestamps: true,
 });
 userSchema.post("save", handleMongooseError);
-const User = model("user", userSchema);
-module.exports = { User };
+const User = (0, mongoose_1.model)("user", userSchema);
+exports.User = User;

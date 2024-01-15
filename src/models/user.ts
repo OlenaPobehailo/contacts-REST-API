@@ -1,7 +1,17 @@
-const { Schema, model } = require("mongoose");
+import { Schema, model, Types } from "mongoose";
 const { handleMongooseError } = require("../helpers");
 
-const userSchema = new Schema(
+interface IUser {
+  password: string;
+  email: string;
+  subscription: "starter" | "pro" | "business";
+  token: string | null;
+  avatarURL?: string;
+  verify: boolean;
+  verificationToken: string;
+}
+
+const userSchema = new Schema<IUser>(
   {
     password: {
       type: String,
@@ -48,6 +58,6 @@ const userSchema = new Schema(
 
 userSchema.post("save", handleMongooseError);
 
-const User = model("user", userSchema);
+const User = model<IUser>("user", userSchema);
 
-module.exports = { User };
+export { User };
