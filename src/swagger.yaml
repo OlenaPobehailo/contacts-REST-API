@@ -278,7 +278,7 @@ paths:
           description: Contact not found
 
         
-  /users/signup:
+  /api/users/signup:
     post:
       summary: User registration
       tags:
@@ -323,7 +323,7 @@ paths:
         '409':
           description: Email in use
           
-  /users/login:
+  /api/users/login:
     post:
       summary: User login
       tags:
@@ -365,7 +365,7 @@ paths:
         '401':
           description: Email or password is wrong
   
-  /users/logout:
+  /api/users/logout:
     get:
       summary: User logout
       tags:
@@ -385,7 +385,7 @@ paths:
         '401':
           description: Not authorized
               
-  /users/current:
+  /api/users/current:
     get:
       summary: Get current user details
       tags:
@@ -409,7 +409,7 @@ paths:
         '401':
           description: Not authorized
           
-  /users/avatars:
+  /api/users/avatars:
     patch:
       summary: Update user avatar
       tags:
@@ -443,7 +443,7 @@ paths:
           description: Not authorized
   
   
-  /users/verify/{verificationToken}:
+  /api/users/verify/{verificationToken}:
     get:
       summary: Verify user by verification token
       tags:
@@ -469,7 +469,7 @@ paths:
         '404':
           description: User not found
           
-  /users/verify:
+  /api/users/verify:
     post:
       summary: Resend email verification
       tags:

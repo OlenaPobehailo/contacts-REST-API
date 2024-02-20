@@ -419,7 +419,7 @@
         }
       }
     },
-    "/users/signup": {
+    "/api/users/signup": {
       "post": {
         "summary": "User registration",
         "tags": [
@@ -486,7 +486,7 @@
         }
       }
     },
-    "/users/login": {
+    "/api/users/login": {
       "post": {
         "summary": "User login",
         "tags": [
@@ -547,7 +547,7 @@
         }
       }
     },
-    "/users/logout": {
+    "/api/users/logout": {
       "get": {
         "summary": "User logout",
         "tags": [
@@ -579,7 +579,7 @@
         }
       }
     },
-    "/users/current": {
+    "/api/users/current": {
       "get": {
         "summary": "Get current user details",
         "tags": [
@@ -618,7 +618,7 @@
         }
       }
     },
-    "/users/avatars": {
+    "/api/users/avatars": {
       "patch": {
         "summary": "Update user avatar",
         "tags": [
@@ -669,7 +669,7 @@
         }
       }
     },
-    "/users/verify/{verificationToken}": {
+    "/api/users/verify/{verificationToken}": {
       "get": {
         "summary": "Verify user by verification token",
         "tags": [
@@ -709,7 +709,7 @@
         }
       }
     },
-    "/users/verify": {
+    "/api/users/verify": {
       "post": {
         "summary": "Resend email verification",
         "tags": [
